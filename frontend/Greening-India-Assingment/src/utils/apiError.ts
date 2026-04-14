@@ -14,7 +14,7 @@ export const getErrorMessage = (
           .join(', ')
       : null
 
-    return responseData?.message ?? responseData?.error ?? fieldsMessage ?? error.message ?? fallback
+    return responseData?.message ?? fieldsMessage ?? responseData?.error ?? error.message ?? fallback
   }
 
   if (error instanceof Error) {

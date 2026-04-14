@@ -421,5 +421,5 @@ server.delete('/tasks/:id', (req, res) => {
 server.use(router)
 
 server.listen(PORT, () => {
-  console.log(`Mock API running on http://localhost:${PORT}`)
+  process.stdout.write(`Mock API running on http://localhost:${PORT}\n`)
 })

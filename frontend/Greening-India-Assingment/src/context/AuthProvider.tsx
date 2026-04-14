@@ -15,7 +15,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const [initialAuthState] = useState(() => loadAuthState())
   const [user, setUser] = useState<User | null>(initialAuthState?.user ?? null)
   const [token, setToken] = useState<string | null>(initialAuthState?.token ?? null)
-  const isInitializing = false
+  const [isInitializing, setIsInitializing] = useState(Boolean(initialAuthState?.token))
 
   const login = useCallback(async (payload: LoginPayload) => {
     const response = await authApi.login(payload)
@@ -34,6 +34,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const logout = useCallback(() => {
     setUser(null)
     setToken(null)
+    setIsInitializing(false)
     clearAuthState()
   }, [])
 
@@ -74,6 +75,13 @@ export function AuthProvider({ children }: PropsWithChildren) {
         }
 
         logout()
+      })
+      .finally(() => {
+        if (!isMounted) {
+          return
+        }
+
+        setIsInitializing(false)
       })
 
     return () => {

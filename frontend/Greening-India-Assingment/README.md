@@ -1,6 +1,6 @@
 # TaskFlow Frontend
 
-Production-ready React frontend for TaskFlow, built with a mock API powered by json-server.
+React frontend for TaskFlow, built with a mock API powered by json-server.
 
 ## Overview
 
@@ -82,12 +82,30 @@ Implemented endpoints:
 - PATCH /tasks/:id
 - DELETE /tasks/:id
 
+## Folder Structure
+
+```text
+frontend/Greening-India-Assingment
+├─ mock-api/           # json-server + auth and project/task middleware routes
+├─ src/
+│  ├─ api/             # axios client and domain API modules
+│  ├─ components/      # reusable UI components (cards, modal, navbar, states)
+│  ├─ context/         # auth context and provider
+│  ├─ hooks/           # reusable hooks (auth, toast)
+│  ├─ pages/           # route-level screens
+│  ├─ routes/          # route guards
+│  ├─ types/           # TypeScript domain models
+│  └─ utils/           # shared helpers (storage, validation, date, api error)
+└─ README.md
+```
+
 ## Architecture Decisions
 
 - API Layer: Dedicated API modules in src/api keep transport concerns isolated from UI.
 - Response Normalization: Project/task/auth responses are mapped into stable TypeScript-safe frontend models, protecting the UI from null/undefined and snake_case/camelCase drift.
 - Auth Management: Auth state is stored in localStorage and synchronized through AuthProvider. Axios interceptors inject tokens and trigger centralized 401 handling.
 - Route Protection: ProtectedRoute blocks private pages when unauthenticated and prevents blank-screen transitions.
+- App Stability: An app-level Error Boundary renders a user-safe fallback if any unexpected runtime render error occurs.
 - Task UX: Task status updates are optimistic for faster perceived performance; failures roll back state and show clear toast errors.
 - UI States: Pages include explicit loading, empty, and error states to avoid silent failures.
 
@@ -102,11 +120,3 @@ npm run lint
 npm run build
 ```
 
-## What I Would Improve With More Time
-
-- Add integration tests for auth and task lifecycle with MSW or Playwright.
-- Add request cancellation and stale response guards for rapid navigation.
-- Add pagination and server-side sorting for large project/task lists.
-- Add project-level permissions and richer role support.
-- Harden token strategy with signed JWT validation semantics in mock server.
-- Add accessibility refinements (keyboard modal trap, improved ARIA labels, focus restoration).
