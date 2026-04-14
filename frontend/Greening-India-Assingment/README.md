@@ -24,6 +24,27 @@ This app includes:
 
 ## Setup Instructions
 
+## Run with Docker
+
+From repository root:
+
+```bash
+git clone <repo>
+cd <project>
+docker compose up
+```
+
+App endpoints:
+
+- Frontend: http://localhost:3000
+- API: http://localhost:4000
+
+Docker setup summary:
+
+- Frontend uses a multi-stage Docker image (`node:alpine` build + `nginx:alpine` runtime).
+- API runs the existing json-server middleware mock server at port 4000.
+- Compose orchestrates both services and waits for API health before starting frontend.
+
 ### 1. Install dependencies
 
 ```bash

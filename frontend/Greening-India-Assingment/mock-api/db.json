@@ -16,15 +16,21 @@
       "ownerId": "u-test",
       "createdAt": "2026-04-01T10:00:00.000Z",
       "updatedAt": "2026-04-01T10:00:00.000Z"
-    },
-    {
-      "id": "257afe3a-adbf-4119-b132-3a9abf608ce3",
-      "name": "test karna hai",
-      "description": "test karna hai test karna hai test karna hai",
-      "ownerId": "u-test",
-      "createdAt": "2026-04-14T07:31:23.625Z",
-      "updatedAt": "2026-04-14T07:31:23.625Z"
     }
   ],
-  "tasks": []
+  "tasks": [
+    {
+      "id": "d9d1af3e-bf02-4e75-99fb-7183dc9a8a19",
+      "projectId": "p-website-redesign",
+      "title": "Testing",
+      "description": "Testing is in Progress",
+      "assignee": "Vikas",
+      "dueDate": "2026-04-15",
+      "status": "todo",
+      "priority": "high",
+      "createdAt": "2026-04-14T10:52:55.889Z",
+      "updatedAt": "2026-04-14T10:52:55.889Z",
+      "createdBy": "u-test"
+    }
+  ]
 }
