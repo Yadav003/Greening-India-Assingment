@@ -1,73 +1,112 @@
-# React + TypeScript + Vite
+# TaskFlow Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Production-ready React frontend for TaskFlow, built with a mock API powered by json-server.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+This app includes:
 
-## React Compiler
+- User authentication (register, login, persisted session)
+- Protected routes with automatic redirect to login on 401
+- Projects list with create project flow
+- Project detail page with task creation, editing, deletion, status updates, and filtering
+- Optimistic UI updates for task status changes with rollback on API failure
+- Clear loading, error, and empty states across key screens
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the ESLint configuration
+- React 19 + TypeScript
+- Vite
+- React Router
+- Axios
+- Tailwind CSS
+- json-server (custom middleware server for auth + business routes)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Setup Instructions
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 1. Install dependencies
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Configure environment
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Create a local env file from the example:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+cp .env.example .env
 ```
+
+Default:
+
+```env
+VITE_API_URL=http://localhost:4000
+```
+
+### 3. Start the mock API (Terminal 1)
+
+```bash
+npm run mock:api
+```
+
+The API runs on http://localhost:4000.
+
+### 4. Start the frontend (Terminal 2)
+
+```bash
+npm run dev
+```
+
+Open the app at http://localhost:5173.
+
+## Test Credentials
+
+- Email: test@example.com
+- Password: password123
+
+These are seeded in mock-api/db.json.
+
+## Mock API Endpoints
+
+Implemented endpoints:
+
+- POST /auth/register
+- POST /auth/login
+- GET /auth/me
+- GET /projects
+- POST /projects
+- GET /projects/:id
+- GET /projects/:id/tasks
+- POST /projects/:id/tasks
+- PATCH /tasks/:id
+- DELETE /tasks/:id
+
+## Architecture Decisions
+
+- API Layer: Dedicated API modules in src/api keep transport concerns isolated from UI.
+- Response Normalization: Project/task/auth responses are mapped into stable TypeScript-safe frontend models, protecting the UI from null/undefined and snake_case/camelCase drift.
+- Auth Management: Auth state is stored in localStorage and synchronized through AuthProvider. Axios interceptors inject tokens and trigger centralized 401 handling.
+- Route Protection: ProtectedRoute blocks private pages when unauthenticated and prevents blank-screen transitions.
+- Task UX: Task status updates are optimistic for faster perceived performance; failures roll back state and show clear toast errors.
+- UI States: Pages include explicit loading, empty, and error states to avoid silent failures.
+
+## Quality and Performance Notes
+
+- Hooks are memoized where useful (useCallback/useMemo) to reduce avoidable re-renders.
+- Task and project actions provide per-action loading feedback (submit, delete, status update).
+- Build and lint are clean:
+
+```bash
+npm run lint
+npm run build
+```
+
+## What I Would Improve With More Time
+
+- Add integration tests for auth and task lifecycle with MSW or Playwright.
+- Add request cancellation and stale response guards for rapid navigation.
+- Add pagination and server-side sorting for large project/task lists.
+- Add project-level permissions and richer role support.
+- Harden token strategy with signed JWT validation semantics in mock server.
+- Add accessibility refinements (keyboard modal trap, improved ARIA labels, focus restoration).

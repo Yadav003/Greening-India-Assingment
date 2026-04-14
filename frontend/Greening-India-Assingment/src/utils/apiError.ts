@@ -5,10 +5,16 @@ export const getErrorMessage = (
   fallback = 'Something went wrong. Please try again.',
 ): string => {
   if (axios.isAxiosError(error)) {
-    const responseMessage = (error.response?.data as { message?: string })
-      ?.message
+    const responseData = error.response?.data as
+      | { message?: string; error?: string; fields?: Record<string, string> }
+      | undefined
+    const fieldsMessage = responseData?.fields
+      ? Object.entries(responseData.fields)
+          .map(([field, message]) => `${field}: ${message}`)
+          .join(', ')
+      : null
 
-    return responseMessage ?? error.message ?? fallback
+    return responseData?.message ?? responseData?.error ?? fieldsMessage ?? error.message ?? fallback
   }
 
   if (error instanceof Error) {

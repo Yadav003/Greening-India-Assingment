@@ -6,6 +6,7 @@ export interface Task {
   projectId: string
   title: string
   description?: string
+  assignee?: string
   dueDate?: string
   status: TaskStatus
   priority: TaskPriority
@@ -16,13 +17,16 @@ export interface Task {
 export interface CreateTaskPayload {
   title: string
   description?: string
+  assignee?: string
   dueDate?: string
+  status?: TaskStatus
   priority: TaskPriority
 }
 
 export interface UpdateTaskPayload {
   title?: string
   description?: string
+  assignee?: string
   dueDate?: string
   status?: TaskStatus
   priority?: TaskPriority
@@ -31,7 +35,10 @@ export interface UpdateTaskPayload {
 export interface TaskFormValues {
   title: string
   description: string
+  assignee: string
   dueDate: string
   priority: TaskPriority
   status: TaskStatus
 }
+
+export type TaskStatusFilter = 'all' | TaskStatus

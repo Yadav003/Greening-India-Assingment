@@ -1,0 +1,70 @@
+{
+  "users": [
+    {
+      "id": "u-test",
+      "name": "Test User",
+      "email": "test@example.com",
+      "password": "password123",
+      "createdAt": "2026-04-01T08:00:00.000Z"
+    }
+  ],
+  "projects": [
+    {
+      "id": "p-website-redesign",
+      "name": "Website Redesign",
+      "description": "Revamp marketing pages for Q2 launch.",
+      "ownerId": "u-test",
+      "createdAt": "2026-04-01T10:00:00.000Z",
+      "updatedAt": "2026-04-01T10:00:00.000Z"
+    },
+    {
+      "id": "ebbc668e-e8cc-4bdc-aef8-3c4df9531abd",
+      "name": "test ui design",
+      "description": "i have to do this",
+      "ownerId": "u-test",
+      "createdAt": "2026-04-14T05:07:53.149Z",
+      "updatedAt": "2026-04-14T05:07:53.149Z"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t-wireframes",
+      "projectId": "p-website-redesign",
+      "title": "Finalize homepage wireframes",
+      "description": "Prepare reviewed wireframes for hero, testimonials, and pricing sections.",
+      "status": "done",
+      "priority": "medium",
+      "assignee": "Test User",
+      "dueDate": "2026-04-20",
+      "createdAt": "2026-04-02T09:00:00.000Z",
+      "updatedAt": "2026-04-14T05:09:06.652Z",
+      "createdBy": "u-test"
+    },
+    {
+      "id": "t-content",
+      "projectId": "p-website-redesign",
+      "title": "Write revised product copy",
+      "description": "Update landing page copy for new feature messaging.",
+      "status": "todo",
+      "priority": "high",
+      "assignee": "Test User",
+      "dueDate": "2026-04-15",
+      "createdAt": "2026-04-03T11:30:00.000Z",
+      "updatedAt": "2026-04-14T05:18:38.775Z",
+      "createdBy": "u-test"
+    },
+    {
+      "id": "t-qa",
+      "projectId": "p-website-redesign",
+      "title": "Cross-browser QA pass",
+      "description": "Run smoke test on Chrome, Safari, and Firefox.",
+      "status": "done",
+      "priority": "low",
+      "assignee": "",
+      "dueDate": "2026-04-10",
+      "createdAt": "2026-04-01T14:00:00.000Z",
+      "updatedAt": "2026-04-09T16:00:00.000Z",
+      "createdBy": "u-test"
+    }
+  ]
+}

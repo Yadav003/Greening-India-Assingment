@@ -1,14 +1,14 @@
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
-import Navbar from './components/Navbar'
-import LoginPage from './pages/Login'
-import ProjectDetailPage from './pages/ProjectDetail'
-import ProjectsPage from './pages/Projects'
-import RegisterPage from './pages/Register'
-import ProtectedRoute from './routes/ProtectedRoute'
+import Navbar from './components/Navbar.tsx'
+import LoginPage from './pages/Login.tsx'
+import ProjectDetailPage from './pages/ProjectDetail.tsx'
+import ProjectsPage from './pages/Projects.tsx'
+import RegisterPage from './pages/Register.tsx'
+import ProtectedRoute from './routes/ProtectedRoute.tsx'
 
 function AppLayout() {
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-900">
+    <div className="min-h-screen bg-slate-50 text-slate-900">
       <Navbar />
       <main className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <Outlet />
