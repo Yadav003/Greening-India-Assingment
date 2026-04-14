@@ -15,6 +15,7 @@ function ProjectsPage() {
   const [error, setError] = useState<string | null>(null)
   const [isCreateOpen, setIsCreateOpen] = useState(false)
   const [isCreating, setIsCreating] = useState(false)
+  const [deletingProjectIds, setDeletingProjectIds] = useState<Record<string, boolean>>({})
   const [createName, setCreateName] = useState('')
   const [createDescription, setCreateDescription] = useState('')
   const [createFormError, setCreateFormError] = useState<string | null>(null)
@@ -91,6 +92,43 @@ function ProjectsPage() {
     }
   }
 
+  const handleDeleteProject = useCallback(
+    async (project: Project) => {
+      const isConfirmed = window.confirm(
+        `Delete "${project.name}" and all its tasks? This action cannot be undone.`,
+      )
+
+      if (!isConfirmed) {
+        return
+      }
+
+      setDeletingProjectIds((previous) => ({ ...previous, [project.id]: true }))
+
+      try {
+        await projectsApi.deleteProject(project.id)
+        setProjects((previous) => previous.filter((item) => item.id !== project.id))
+        showToast({
+          variant: 'success',
+          title: 'Project deleted',
+          message: `${project.name} was removed.`,
+        })
+      } catch (requestError) {
+        showToast({
+          variant: 'error',
+          title: 'Delete project failed',
+          message: getErrorMessage(requestError, 'Could not delete project.'),
+        })
+      } finally {
+        setDeletingProjectIds((previous) => {
+          const next = { ...previous }
+          delete next[project.id]
+          return next
+        })
+      }
+    },
+    [showToast],
+  )
+
   if (isLoading) {
     return <Loader label="Loading projects..." />
   }
@@ -141,20 +179,34 @@ function ProjectsPage() {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {projects.map((project) => (
-            <Link
+            <article
               key={project.id}
-              to={`/projects/${project.id}`}
-              className="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md"
+              className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md"
             >
-              <h2 className="text-lg font-semibold text-slate-900 transition group-hover:text-slate-700">
-                {project.name}
-              </h2>
-              <p className="mt-2 text-sm text-slate-600">{project.description}</p>
-              <div className="mt-4 flex items-center justify-between text-xs text-slate-500">
-                <span>{project.taskCount ?? 0} tasks</span>
-                <span>{project.completedTaskCount ?? 0} done</span>
+              <Link to={`/projects/${project.id}`} className="group block">
+                <h2 className="text-lg font-semibold text-slate-900 transition group-hover:text-slate-700">
+                  {project.name}
+                </h2>
+                <p className="mt-2 text-sm text-slate-600">{project.description}</p>
+                <div className="mt-4 flex items-center justify-between text-xs text-slate-500">
+                  <span>{project.taskCount ?? 0} tasks</span>
+                  <span>{project.completedTaskCount ?? 0} done</span>
+                </div>
+              </Link>
+
+              <div className="mt-4 flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => {
+                    void handleDeleteProject(project)
+                  }}
+                  disabled={Boolean(deletingProjectIds[project.id])}
+                  className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-semibold text-red-700 transition hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {deletingProjectIds[project.id] ? 'Deleting...' : 'Delete project'}
+                </button>
               </div>
-            </Link>
+            </article>
           ))}
         </div>
       )}

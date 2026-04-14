@@ -72,7 +72,7 @@ function TaskCard({
         </span>
       </div>
 
-      <div className="mt-4 grid gap-3 sm:grid-cols-[1fr_auto_auto] sm:items-center">
+      <div className="mt-4 grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto_auto] sm:items-end">
         <label className="block">
           <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
             Status
@@ -89,7 +89,7 @@ function TaskCard({
           type="button"
           onClick={() => onEdit(task)}
           disabled={isDeleting || isUpdatingStatus}
-          className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
+          className="sm:self-end rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
         >
           Edit
         </button>
@@ -97,7 +97,7 @@ function TaskCard({
           type="button"
           onClick={() => onDelete(task.id)}
           disabled={isDeleting || isUpdatingStatus}
-          className="rounded-lg bg-red-600 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-red-700"
+          className="sm:self-end rounded-lg bg-red-600 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-red-700"
         >
           {isDeleting ? 'Deleting...' : 'Delete'}
         </button>

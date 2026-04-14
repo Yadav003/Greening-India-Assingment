@@ -268,6 +268,26 @@ server.get('/projects/:id', (req, res) => {
   return res.json(withProjectStats(project, tasks))
 })
 
+server.delete('/projects/:id', (req, res) => {
+  const project = db.get('projects').find({ id: req.params.id }).value()
+
+  if (!project) {
+    return res.status(404).json({ error: 'not found' })
+  }
+
+  if (String(project.ownerId) !== String(req.user.id)) {
+    return res.status(403).json({ error: 'forbidden' })
+  }
+
+  db.get('tasks')
+    .remove((task) => String(task.projectId) === String(req.params.id))
+    .write()
+
+  db.get('projects').remove({ id: req.params.id }).write()
+
+  return res.status(204).send()
+})
+
 server.get('/projects/:id/tasks', (req, res) => {
   const project = db.get('projects').find({ id: req.params.id }).value()
 

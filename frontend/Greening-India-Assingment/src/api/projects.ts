@@ -41,4 +41,8 @@ export const projectsApi = {
     const response = await apiClient.post<Project>('/projects', payload)
     return mapProject(response.data)
   },
+
+  deleteProject: async (projectId: string): Promise<void> => {
+    await apiClient.delete(`/projects/${projectId}`)
+  },
 }
